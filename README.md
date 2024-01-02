@@ -10,7 +10,9 @@ I used [this BAT-to-EXE converter](https://bat-to-exe-converter-x64.en.softonic.
 2. Unzip the file
 3. Run the "install.bat"
 
-Legal stuff:
+
+
+## Legal stuff:
 |Program                                    |License
 |-------------------------------------------|------------------------------------------------------------------------|
 |[Fabric installer](https://fabricmc.net/)  | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)  |
