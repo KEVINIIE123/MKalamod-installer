@@ -1,6 +1,5 @@
 @echo off
 startcd==%cd%
-if %cd%==%temp%\mkalamod-installer set temp=1
 :start
 del /F /Q mods.zip
 rmdir /S /Q mods 
@@ -124,5 +123,3 @@ del /F /Q .wget-hsts
 ec "File cleanup completed sucessfully!" 27
 echo Press any key to exit . . .
 pause >nul
-if %temp%==1 (exit) ELSE ()
-cmd rmdir /S %temp%\mkalamod-installer && exit
