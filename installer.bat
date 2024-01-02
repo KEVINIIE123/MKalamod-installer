@@ -1,5 +1,6 @@
 @echo off
 startcd==%cd%
+if %cd%==%temp%\mkalamod-installer set temp=1
 :start
 del /F /Q mods.zip
 rmdir /S /Q mods 
@@ -66,40 +67,43 @@ echo ==================================================
 :download
 title Downloading MKalamod %ver%
 echo Downloading MKalamod %ver%
-if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip -q --show-progress
-if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip -q --show-progress
-if %ver%==v7.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.0b/mods.zip -q --show-progress
-if %ver%==v6.1.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1.1b/mods.zip -q --show-progress
-if %ver%==v6.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1b/mods.zip -q --show-progress
-if %ver%==v6.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.0b/mods.zip -q --show-progress
-if %ver%==v5.2b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.2b/mods.zip -q --show-progress
-if %ver%==v5.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.1b/mods.zip -q --show-progress
-if %ver%==v5.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.0b/mods.zip -q --show-progress
-if %ver%==v4.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v4.0b/mods.zip -q --show-progress
-if %ver%==v3.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.1b/mods.zip -q --show-progress
-if %ver%==v3.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.0b/mods.zip -q --show-progress
-if %ver%==v2.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.1b/mods.zip -q --show-progress
-if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.0.1b/mods.zip -q --show-progress
-if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip -q --show-progress
-if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip -q --show-progress
+if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v7.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v6.1.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v6.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v6.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v5.2b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.2b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v5.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v5.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v4.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v4.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v3.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v3.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.0b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v2.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.0.1b/mods.zip -q --show-progress -O mods.zip
+if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip -q --show-progress -O mods.zip
+if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip -q --show-progress -O mods.zip
 echo ==================================================
+title Extracting MKalamod
 ec "Download completed. Extracting." 27
 powershell Expand-Archive mods.zip
 ec "Extracting completed" 27
 :install
 echo ==================================================
+title Install location
 echo Where do you want the mods to be put?
 echo default = Normal minecraft install location. (Will delete your current mods!)
 set /p location=Install location:
 echo ==================================================
-echo Installing...
+title Moving files
 if %location%==default goto defaultinstall
-cd %location%
-xcopy %startcd%/mods %cd%
+echo Installing...
+xcopy "%cd%/mods" "%location%" /Q
 echo ==================================================
 goto Sucess
 :defaultinstall
 IF exist "%appdata%\.minecraft\mods" ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
+echo Installing...
 del /F /Q "%appdata%\.minecraft\mods" >nul
 xcopy "%cd%\mods\*" "%appdata%\.minecraft\mods" /q >nul
 goto Success
@@ -110,11 +114,15 @@ ec "%appdata%\.minecraft\mods!" C7
 goto install
 
 :Success
+title Sucessfully installed MKalamod
 echo ==================================================
 ec "MKalamod installed succesfully!" 27
 echo Cleaning up files...
 del /F /Q mods.zip
 rmdir /S /Q mods
+del /F /Q .wget-hsts
 ec "File cleanup completed sucessfully!" 27
 echo Press any key to exit . . .
 pause >nul
+if %temp%==1 (exit) ELSE ()
+cmd rmdir /S %temp%\mkalamod-installer && exit
