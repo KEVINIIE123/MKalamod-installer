@@ -8,7 +8,7 @@ echo MKalamod installer v1.0
 title MKalamod installer - Menu
 echo ==================================================
 echo Please select a release.
-echo Type the version number EXACLY!
+echo Type the version number EXACTLY!
 echo Leatest versions:
 ec "v8.0b - 1.20.4 (Leatest Pre-release)" C7
 ec "v7.1b - 1.20.2 (Leatest Stable-release)" A7
@@ -34,15 +34,6 @@ echo ==================================================
 echo Selected version: %ver%
 echo Type "Back" to go back to the previous menu
 :fabricinstall
-echo Do you have Fabric for the specific minecraft version installed?
-set /p fabricinstall=Yes/No/Back:
-if %fabricinstall%==Yes goto download
-if %fabricinstall%==No goto nofabric
-if %fabricinstall%==Back goto start
-goto fabricinstall
-:nofabric
-echo Please wait. Installing Fabric.
-title MKalamod - Installing Fabric
 if %ver%==v8.0b set mcver=1.20.4
 if %ver%==v7.1b set mcver=1.20.2
 if %ver%==v7.0b set mcver=1.20.2
@@ -59,6 +50,15 @@ if %ver%==v2.1b set mcver=1.19.3
 if %ver%==v2.0.1b set mcver=1.19.3
 if %ver%==v2.0b set mcver=1.19.3
 if %ver%==v1.0b set mcver=1.19.2
+echo Do you have Fabric for minecraft version %mcver% installed?
+set /p fabricinstall=Yes/No/Back:
+if %fabricinstall%==Yes goto download
+if %fabricinstall%==No goto nofabric
+if %fabricinstall%==Back goto start
+goto fabricinstall
+:nofabric
+echo Please wait. Installing Fabric.
+title MKalamod - Installing Fabric
 java -jar fabric-installer-0.11.2.jar client -mcversion %mcver%
 echo ==================================================
 echo Successfully installed Fabric!
@@ -87,7 +87,7 @@ powershell Expand-Archive mods.zip
 :install
 echo ==================================================
 echo Where do you want the mods to be put?
-echo default = normal minecraft install location. (will delete your current mods)
+echo default = Normal minecraft install location. (Will delete your current mods!)
 set /p location=Install location:
 echo ==================================================
 echo Installing...
@@ -96,16 +96,17 @@ cd %location%
 xcopy %startcd%/mods %cd%
 goto Sucess
 :defaultinstall
-IF exist %appdata%/.minecraft/mods ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
-del /F /Q %appdata%\.minecraft\mods\* >nul
-xcopy %startcd%/mods %cd%
+IF exist "%appdata%\.minecraft\mods" ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
+del /F /Q "%appdata%\.minecraft\mods" >nul
+xcopy "%cd%\mods\*" "%appdata%\.minecraft\mods" /q >nul
+goto Success
 
 :nodefaultdirectory
 ec "ERROR: You don't have a mods folder! Please create one at" C7
-ec "%appdata%/.minecraft/mods!" C7
+ec "%appdata%\.minecraft\mods!" C7
 goto install
 
 :Success
 echo ==================================================
-echo MKalamod installed succesfully!
-pause
+echo MKalamod installed succesfully! Press any key to exit...
+pause >nul
