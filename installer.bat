@@ -65,22 +65,22 @@ echo Successfully installed Fabric!
 echo ==================================================
 :download
 echo Downloading MKalamod %ver%
-if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip
-if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip
-if %ver%==v7.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.0b/mods.zip
-if %ver%==v6.1.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1.1b/mods.zip
-if %ver%==v6.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1b/mods.zip
-if %ver%==v6.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.0b/mods.zip
-if %ver%==v5.2b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.2b/mods.zip
-if %ver%==v5.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.1b/mods.zip
-if %ver%==v5.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.0b/mods.zip
-if %ver%==v4.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v4.0b/mods.zip
-if %ver%==v3.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.1b/mods.zip
-if %ver%==v3.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.0b/mods.zip
-if %ver%==v2.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.1b/mods.zip
-if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.0.1b/mods.zip
-if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip
-if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip
+if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip -q --show-progress
+if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip -q --show-progress
+if %ver%==v7.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.0b/mods.zip -q --show-progress
+if %ver%==v6.1.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1.1b/mods.zip -q --show-progress
+if %ver%==v6.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.1b/mods.zip -q --show-progress
+if %ver%==v6.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v6.0b/mods.zip -q --show-progress
+if %ver%==v5.2b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.2b/mods.zip -q --show-progress
+if %ver%==v5.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.1b/mods.zip -q --show-progress
+if %ver%==v5.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v5.0b/mods.zip -q --show-progress
+if %ver%==v4.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v4.0b/mods.zip -q --show-progress
+if %ver%==v3.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.1b/mods.zip -q --show-progress
+if %ver%==v3.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/3.0b/mods.zip -q --show-progress
+if %ver%==v2.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.1b/mods.zip -q --show-progress
+if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.0.1b/mods.zip -q --show-progress
+if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip -q --show-progress
+if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip -q --show-progress
 echo ==================================================
 echo Download completed. Extracting.
 powershell Expand-Archive mods.zip
@@ -96,9 +96,14 @@ cd %location%
 xcopy %startcd%/mods %cd%
 goto Sucess
 :defaultinstall
-cd %appdata%/.minecraft/mods
-del /F /Q *
+IF exist %appdata%/.minecraft/mods ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
+del /F /Q %appdata%\.minecraft\mods\* >nul
 xcopy %startcd%/mods %cd%
+
+:nodefaultdirectory
+ec "ERROR: You don't have a mods folder! Please create one at" C7
+ec "%appdata%/.minecraft/mods!" C7
+goto install
 
 :Success
 echo ==================================================
