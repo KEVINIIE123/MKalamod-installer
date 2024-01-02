@@ -1,8 +1,8 @@
 @echo off
 startcd==%cd%
 :start
-del /F /Q mods.zip >nul
-rmdir /S /Q mods
+del /F /Q mods.zip
+rmdir /S /Q mods 
 cls
 echo MKalamod installer v1.0
 title MKalamod installer - Menu
@@ -64,6 +64,7 @@ echo ==================================================
 echo Successfully installed Fabric!
 echo ==================================================
 :download
+title Downloading MKalamod %ver%
 echo Downloading MKalamod %ver%
 if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip -q --show-progress
 if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip -q --show-progress
@@ -82,8 +83,9 @@ if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download
 if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip -q --show-progress
 if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip -q --show-progress
 echo ==================================================
-echo Download completed. Extracting.
+ec "Download completed. Extracting." 27
 powershell Expand-Archive mods.zip
+ec "Extracting completed" 27
 :install
 echo ==================================================
 echo Where do you want the mods to be put?
@@ -94,6 +96,7 @@ echo Installing...
 if %location%==default goto defaultinstall
 cd %location%
 xcopy %startcd%/mods %cd%
+echo ==================================================
 goto Sucess
 :defaultinstall
 IF exist "%appdata%\.minecraft\mods" ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
@@ -108,5 +111,10 @@ goto install
 
 :Success
 echo ==================================================
-echo MKalamod installed succesfully! Press any key to exit...
+ec "MKalamod installed succesfully!" 27
+echo Cleaning up files...
+del /F /Q mods.zip
+rmdir /S /Q mods
+ec "File cleanup completed sucessfully!" 27
+echo Press any key to exit . . .
 pause >nul
