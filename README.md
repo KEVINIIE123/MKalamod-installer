@@ -30,5 +30,3 @@ It doesn't work! Open a ticket on our [discord server.](https://discord.gg/dkJDc
 |-------------------------------------------|------------------------------------------------------------------------|
 |[Fabric installer](https://fabricmc.net/)  | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)  |
 |[WGet](https://www.gnu.org/software/wget/) | [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)        |
-
-This program does not have any copyright
