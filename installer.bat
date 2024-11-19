@@ -9,10 +9,11 @@ title MKalamod installer - Menu
 echo ==================================================
 echo Please select a release.
 echo Type the version number EXACTLY!
-echo Leatest versions:
-ec "v9.0b - 1.21 (Leatest Pre-release)" C7
-ec "v7.1b - 1.20.2 (Leatest Stable-release)" A7
+echo Latest versions:
+ec "v10.0a - 1.21.3 (Latest Pre-release)" C7
+ec "v9.0b - 1.21 (Latest Stable-release)" A7
 echo Older versions:
+ec "v7.1b - 1.20.2" 27
 ec "v8.0b - 1.20.4 (Pre-release)" C7
 ec "v7.0b - 1.20.2 (Pre-release)" C7
 ec "v6.1.1b - 1.20.1" 27
@@ -35,6 +36,7 @@ echo ==================================================
 echo Selected version: %ver%
 echo Type "Back" to go back to the previous menu
 :fabricinstall
+if %ver%==v10.0a set mcver=1.21.3
 if %ver%==v9.0b set mcver=1.21
 if %ver%==v8.0b set mcver=1.20.4
 if %ver%==v7.1b set mcver=1.20.2
@@ -68,6 +70,7 @@ echo ==================================================
 :download
 title Downloading MKalamod %ver%
 echo Downloading MKalamod %ver%
+if %ver%==v10.0a wget https://github.com/KEVINIIE123/MKalamod/releases/download/v10.0a/mods.zip -q --show-progress -O mods.zip
 if %ver%==v9.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v9.0b/mods.zip -q --show-progress -O mods.zip
 if %ver%==v8.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v8.0b/mods.zip -q --show-progress -O mods.zip
 if %ver%==v7.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/v7.1b/mods.zip -q --show-progress -O mods.zip
