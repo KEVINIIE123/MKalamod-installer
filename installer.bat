@@ -3,18 +3,18 @@ startcd==%cd%
 :start
 del /F /Q mods.zip
 rmdir /S /Q mods 
-cls
-echo MKalamod installer v1.1
+echo MKalamod installer v1.2
 title MKalamod installer - Menu
 echo ==================================================
 echo Please select a release.
 echo Type the version number EXACTLY!
 echo Latest versions:
-ec "v10.0a - 1.21.3 (Latest Pre-release)" C7
-ec "v9.0b - 1.21 (Latest Stable-release)" A7
+ec "v10.0a - 1.21.3 (Latest ALPHA release)" C7
+ec "v9.1b - 1.21 (Latest Stable-release)" A7
 echo Older versions:
-ec "v7.1b - 1.20.2" 27
+ec "v9.0b - 1.21" 27
 ec "v8.0b - 1.20.4 (Pre-release)" C7
+ec "v7.1b - 1.20.2" 27
 ec "v7.0b - 1.20.2 (Pre-release)" C7
 ec "v6.1.1b - 1.20.1" 27
 ec "v6.1b - 1.20.1 (Pre-release)" C7
@@ -33,37 +33,90 @@ echo For older versions and to get notified on a new release join our discord se
 echo https://discord.gg/dkJDcMDz6T
 set /p ver=Version:
 echo ==================================================
-echo Selected version: %ver%
-echo Type "Back" to go back to the previous menu
-:fabricinstall
-if %ver%==v10.0a set mcver=1.21.3
-if %ver%==v9.0b set mcver=1.21
-if %ver%==v8.0b set mcver=1.20.4
-if %ver%==v7.1b set mcver=1.20.2
-if %ver%==v7.0b set mcver=1.20.2
-if %ver%==v6.1.1b set mcver=1.20.1
-if %ver%==v6.1b set mcver=1.20.1
-if %ver%==v6.0b set mcver=1.20.1
-if %ver%==v5.2b set mcver=1.19.4
-if %ver%==v5.1b set mcver=1.19.4
-if %ver%==v5.0b set mcver=1.19.4
-if %ver%==v4.0b set mcver=1.19.4
-if %ver%==v3.1b set mcver=1.19.3
-if %ver%==v3.0b set mcver=1.19.3
-if %ver%==v2.1b set mcver=1.19.3
-if %ver%==v2.0.1b set mcver=1.19.3
-if %ver%==v2.0b set mcver=1.19.3
-if %ver%==v1.0b set mcver=1.19.2
+if "%ver%" == "v10.0a" (
+    set mcver=1.21.3
+) else if "%ver%" == "v9.1b" (
+    set mcver=1.21.1
+) else if "%ver%" == "v9.0b" (
+    set mcver=1.21
+) else if "%ver%" == "v8.0b" (
+    set mcver=1.20.4
+) else if "%ver%" == "v7.1b" (
+    set mcver=1.20.2
+) else if "%ver%" == "v7.0b" (
+    set mcver=1.20.2
+) else if "%ver%" == "v6.1.1b" (
+    set mcver=1.20.1
+) else if "%ver%" == "v6.1b" (
+    set mcver=1.20.1
+) else if "%ver%" == "v6.0b" (
+    set mcver=1.20.1
+) else if "%ver%" == "v5.2b" (
+    set mcver=1.19.4
+) else if "%ver%" == "v5.1b" (
+    set mcver=1.19.4
+) else if "%ver%" == "v5.0b" (
+    set mcver=1.19.4
+) else if "%ver%" == "v4.0b" (
+    set mcver=1.19.4
+) else if "%ver%" == "v3.1b" (
+    set mcver=1.19.3
+) else if "%ver%" == "v3.0b" (
+    set mcver=1.19.3
+) else if "%ver%" == "v2.1b" (
+    set mcver=1.19.3
+) else if "%ver%" == "v2.0.1b" (
+    set mcver=1.19.3
+) else if "%ver%" == "v2.0b" (
+    set mcver=1.19.3
+) else if "%ver%" == "v1.0b" (
+    set mcver=1.19.2
+) else goto versionselecterror
+
+
+
+echo Selected version: %ver% (%mcver%)
+echo ==================================================
+title Install location
+echo Where do you want the mods to be put? Please enter the full path!
+echo Leave empty for default minecraft install location. (Will delete your current mods!)
+set /p location=Install location:
+echo ==================================================
+if "%location%" == "" (
+    echo Using default minecraft install location.
+    echo ==================================================
+) else if "%location%" == "default" (
+    echo Using legacy default minecraft install location.
+    echo ==================================================
+) else (
+    echo Istall location set to: %location%
+    echo ==================================================
+    goto download
+)
+
+
+
+:fabricinstallquestion
 echo Do you have Fabric for minecraft version %mcver% installed?
 set /p fabricinstall=Yes/No/Back:
-if %fabricinstall%==Yes goto download
-if %fabricinstall%==No goto nofabric
-if %fabricinstall%==Back goto start
-goto fabricinstall
-:nofabric
+if "%fabricinstall%" == "Yes" (
+    goto download
+) else if "%fabricinstall%" == "No" (
+    goto fabricinstall
+) else goto fabricinstallquestion
+
+
+
+:fabricinstall
 echo Please wait. Installing Fabric.
 title MKalamod - Installing Fabric
 java -jar fabric-installer-1.0.1.jar client -mcversion %mcver%
+if %ERRORLEVEL%==0 goto fabricinstallsuccess
+echo.
+echo SOMETHING WENT WRONG WITH FABRIC! PLEASE OPEN A TICKET ON GITHUB!
+echo ERROR %ERRORLEVEL%! PRESS ANY KEY TO CONTINUE INSTALL WITHOUT FABRIC!
+pause >nul
+:fabricinstallsuccess
 echo ==================================================
 echo Successfully installed Fabric!
 echo ==================================================
@@ -88,18 +141,18 @@ if %ver%==v2.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2
 if %ver%==v2.0.1b wget https://github.com/KEVINIIE123/MKalamod/releases/download/2.0.1b/mods.zip -q --show-progress -O mods.zip
 if %ver%==v2.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/1.19.3/mods.zip -q --show-progress -O mods.zip
 if %ver%==v1.0b wget https://github.com/KEVINIIE123/MKalamod/releases/download/beta/mods.zip -q --show-progress -O mods.zip
+if %ERRORLEVEL% == 0 goto extract
+echo.
+echo SOMETHING WENT WRONG WITH DOWNLOADING! PLEASE CHECK YOUR INTERNET CONNECTION OR OPEN A TICKET ON GITHUB!
+echo ERROR %ERRORLEVEL%! PRESS ANY KEY TO CONTINUE INSTALL WITHOUT DOWNLOADING!
+pause >nul
+:extract
 echo ==================================================
 title Extracting MKalamod
 ec "Download completed. Extracting." 27
 powershell Expand-Archive mods.zip
 ec "Extracting completed" 27
 :install
-echo ==================================================
-title Install location
-echo Where do you want the mods to be put?
-echo default = Normal minecraft install location. (Will delete your current mods!)
-set /p location=Install location:
-echo ==================================================
 title Moving files
 if %location%==default goto defaultinstall
 echo Installing...
@@ -129,3 +182,11 @@ del /F /Q .wget-hsts
 ec "File cleanup completed sucessfully!" 27
 echo Press any key to exit . . .
 pause >nul
+exit
+
+:versionselecterror
+echo Selected version does NOT exist. Please type the version EXACLY!
+echo EXAMPLE: v10.0a
+pause
+cls
+goto start
