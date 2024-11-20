@@ -1,8 +1,9 @@
 @echo off
-startcd==%cd%
+set startcd==%cd%
 :start
-del /F /Q mods.zip
-rmdir /S /Q mods 
+del /F /Q mods.zip >nul
+rmdir /S /Q mods >nul
+cls
 echo MKalamod installer v1.2
 title MKalamod installer - Menu
 echo ==================================================
@@ -89,7 +90,7 @@ if "%location%" == "" (
     echo Using legacy default minecraft install location.
     echo ==================================================
 ) else (
-    echo Istall location set to: %location%
+    echo Install location set to: %location%
     echo ==================================================
     goto download
 )
@@ -151,19 +152,27 @@ echo ==================================================
 title Extracting MKalamod
 ec "Download completed. Extracting." 27
 powershell Expand-Archive mods.zip
+if %ERRORLEVEL% == 0 goto extractcomplete
+echo.
+echo SOMETHING WENT WRONG WITH EXTRACTING! PLEASE TRY AGAIN OR OPEN A TICKET ON GITHUB!
+echo ERROR %ERRORLEVEL%! PRESS ANY KEY TO CONTINUE INSTALL WITHOUT EXTRACTING!
+pause >nul
+:extractcomplete
 ec "Extracting completed" 27
 :install
 title Moving files
 if %location%==default goto defaultinstall
 echo Installing...
-xcopy "%cd%/mods" "%location%" /Q
+xcopy "%cd%/mods" "%location%" /Q /I
 echo ==================================================
-goto Sucess
+goto Success
 :defaultinstall
-IF exist "%appdata%\.minecraft\mods" ( echo Minecraft mods directory found! Deleting other mods. ) ELSE ( goto nodefaultdirectory )
+IF exist "%appdata%\.minecraft\mods" (
+    echo Minecraft mods directory found! Deleting other mods.
+    ) ELSE ( goto nodefaultdirectory )
 echo Installing...
 del /F /Q "%appdata%\.minecraft\mods" >nul
-xcopy "%cd%\mods\*" "%appdata%\.minecraft\mods" /q >nul
+xcopy "%cd%\mods\*" "%appdata%\.minecraft\mods" /q /I >nul
 goto Success
 
 :nodefaultdirectory
@@ -173,8 +182,8 @@ goto install
 
 :Success
 title Sucessfully installed MKalamod
-echo ==================================================
 ec "MKalamod installed succesfully!" 27
+echo ==================================================
 echo Cleaning up files...
 del /F /Q mods.zip
 rmdir /S /Q mods
