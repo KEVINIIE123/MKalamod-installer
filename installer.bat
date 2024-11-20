@@ -185,7 +185,7 @@ title Sucessfully installed MKalamod
 ec "MKalamod installed succesfully!" 27
 echo ==================================================
 echo Cleaning up files...
-del /F /Q mods.zip
+del /F /Q mods.zip REM is this why virus??
 rmdir /S /Q mods
 del /F /Q .wget-hsts
 ec "File cleanup completed sucessfully!" 27
